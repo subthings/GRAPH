@@ -2,7 +2,9 @@ import networkx as nx
 from visualization import visualize
 from visualization import write_in_file
 from cyclic import is_cyclic
+from visualization import benchmark
 
+@benchmark
 def graph_generator():
     """
     in_degrees = nx.utils.powerlaw_sequence(100, 2.1) #100 nodes, power-law exponent 2.5
@@ -18,7 +20,7 @@ def graph_generator():
     GD.remove_edges_from(GD.selfloop_edges())
 
     """
-    DG = nx.scale_free_graph(100, alpha=0.41, beta=0.54, gamma=0.05, delta_in=0.2, delta_out=0, create_using=None, seed=None)
+    DG = nx.scale_free_graph(50, alpha=0.41, beta=0.54, gamma=0.05, delta_in=0.2, delta_out=0, create_using=None, seed=None)
 
     """Make graph weighted"""
 
@@ -53,9 +55,9 @@ def graph_generator():
     """
 
 
-    visualize(DG, 'Cyclic')
+    #visualize(DG, 'Cyclic')
 
-    write_in_file(DG, 'Cyclic graph')
+    #write_in_file(DG, 'Cyclic graph')
 
 
     #print(type(G))
@@ -68,7 +70,7 @@ def graph_generator():
     #print('..............')
 
 
-    is_cyclic(DG)
+
     #print(nx.info(GD))
 
     #print(DG.edges())

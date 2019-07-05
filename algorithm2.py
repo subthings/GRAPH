@@ -11,7 +11,10 @@ import networkx as nx
 #from graphGenerator import graph_generator
 from visualization import write_in_file
 from cyclic import is_cyclic
-G = nx.DiGraph()
+from visualization import benchmark
+G = nx.MultiDiGraph()
+
+@benchmark
 def algorithm2(G):
 
     S = list(G.nodes())
@@ -58,10 +61,5 @@ def algorithm2(G):
             remove.append(u)
 
     G.remove_edges_from(remove)
-    write_in_file(G, 'From Algorithm2')
 
-
-
-    is_cyclic(G)
-
-
+    return G

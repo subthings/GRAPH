@@ -1,0 +1,16 @@
+.idea/*
+test1/*
+test2/*
+test3/*
+test cpp/*
+*.txt
+*.cfg
+*.json
+lib/*
+*.dot
+*.png
+*.csv
+*.ods
+__pycache__/*
+bin/*
+lib64

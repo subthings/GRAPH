@@ -3,8 +3,9 @@ import matplotlib.pyplot as plt
 from networkx.drawing.nx_pydot import write_dot
 import datetime
 from cyclic import is_cyclic
+import csv
 
-G = nx.DiGraph
+G = nx.MultiDiGraph()
 which = ''
 def visualize(G, name):
     """
@@ -12,9 +13,13 @@ def visualize(G, name):
     suffix = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
     filename = "_".join([basename, suffix]).dot
 """
-    nx.draw_circular(G, nodecolor='light blue', edge_color='grey')
-    write_dot(G, 'Cyclic.dot')
-    plt.savefig("CycleGraph.png")  # Saved image graph
+    nx.draw_networkx(G, nodecolor='light blue', edge_color='grey')
+
+    #write_dot(G, 'Cyclic.dot')
+    #plt.savefig("CycleGraph.png")  # Saved image graph
+    write_dot(G, name +'.dot')
+    plt.savefig(name + '.png')  # Saved image graph
+
     plt.show()
 
 
@@ -32,7 +37,7 @@ def write_in_file(G, which):
     file.write('Number of connected components: ')
     GU = G.to_undirected()
     file.write(str(nx.number_connected_components(GU)))
-    file.write(str(max(list(GU.degree(GU.nodes())))))
+#    file.write(str(max(list(GU.degree(GU.nodes())))))
 
     file.write('\n\n')
 
@@ -54,6 +59,55 @@ def simple_write_in_file(G):
 
     file.close()
 
+def nc(G):
+    GU = G.to_undirected()
+    components = nx.number_connected_components(GU)
+    return components
+
+def diameter(G):
+    if nc(G) == 1:
+        GU = G.to_undirected()
+        return nx.diameter(GU)
+    else: return 'infinite'
+
+def average_path(G):
+    if nc(G) == 1:
+        GU = G.to_undirected()
+        return nx.average_shortest_path_length(GU)
+    else: return 'infinite'
+
+def csv_writer(func):
+    """Decorator which is writing data in csv file"""
+    import csv
+    def wrapper():
+
+        with open('data.csv', 'a') as file:
+            writer = csv.writer(file)
+
+
+    return wrapper
+
+
+def benchmark(func):
+    """
+    Декоратор, выводящий время, которое заняло
+    выполнение декорируемой функции.
+    """
+    import time
+    def wrapper(*args, **kwargs):
+        t = time.clock()
+        res = func(*args, **kwargs)
+        print(func.__name__, time.clock() - t)
+        with open('speed.txt', 'a') as file:
+            file.write(func.__name__)
+            file.write(' ')
+            file.write(str(time.clock() - t))
+            file.write('\n')
+            file.close()
+        return res
+    return wrapper
+
+
 
 """
 pos = nx.spring_layout(G)
@@ -67,3 +121,4 @@ f.write(k)
 f.close()
 
 """
+
